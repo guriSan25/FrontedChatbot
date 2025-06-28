@@ -37,7 +37,12 @@ export default function LoginForm() {
   };
 
   return (
-    <div className={styles.loginContainer}>
+    <div className={styles.loginBackground}>
+      {/* Figuras azules generadas con CSS */}
+      <div className={styles.blueShape1}></div>
+      <div className={styles.blueShape2}></div>
+      <div className={styles.blueShape3}></div>
+
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h2 className={styles.loginTitle}>Login</h2>
 
@@ -59,7 +64,7 @@ export default function LoginForm() {
         />
         {errors.password && <p className={styles.errorText}>{errors.password}</p>}
 
-        <button type="submit" className={styles.loginButton}>login</button>
+        <button type="submit" className={styles.loginButton}>Login</button>
       </form>
     </div>
   );
