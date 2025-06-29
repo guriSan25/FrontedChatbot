@@ -1,3 +1,6 @@
+import styles from './navbar.module.css';
+import { FaRegComments, FaPen, FaShieldAlt } from "react-icons/fa";
+
 export default function Navbar() {
   const chats = [
     "Problema con Docker",
@@ -7,30 +10,37 @@ export default function Navbar() {
     "¿Por qué no usar PHP?",
     "Python y Flask",
     "¿Qué es el modelo relacional?",
-  ]
+  ];
 
   return (
-    <aside className="w-64 bg-[#111214] text-white p-4 flex flex-col justify-between">
-      <div>
-        <h2 className="text-xl font-bold mb-6">🤖 CHAPI</h2>
-        <button className="flex items-center gap-2 mb-6 px-4 py-2 bg-[#2E2F33] hover:bg-[#3A3B40] rounded">
-          ✏️ Nuevo Chat
+    <>
+      <aside className={styles.navbar}>
+        <div className={styles.logo}>
+          <FaRegComments size={28} />
+          <h1 className="font-bold text-xl">CHAPI</h1>
+        </div>
+
+        <button className={styles.newChatButton}>
+          <FaPen size={24} />
+          <span>Nuevo Chat</span>
         </button>
-        <div className="space-y-2">
-          {chats.map((chat, idx) => (
-            <button key={idx} className="w-full text-left flex items-center gap-2 hover:bg-[#2E2F33] p-2 rounded">
-              💬 {chat}
+
+        <hr className="border-gray-700 mb-6" />
+
+        <nav className={styles.chatList}>
+          {chats.map((chat, i) => (
+            <button key={i} className={styles.chatItem}>
+              <FaRegComments size={20} />
+              <span>{chat}</span>
             </button>
           ))}
-        </div>
-      </div>
+        </nav>
 
-      <div className="mt-6 border-t border-gray-600 pt-4 text-sm text-gray-300">
-        <div className="bg-[#1E3A8A] text-white p-2 rounded">
-          🛡️ Accede al plan premium <br />
-          ¡Usa la IA sin límite!
+        <div className={styles.premiumBox}>
+          <FaShieldAlt size={26} className="mx-auto mb-1" />
+          <p>Acceder al plan premium<br />¡Usa la IA sin límite!</p>
         </div>
-      </div>
-    </aside>
-  )
+      </aside>
+    </>
+  );
 }

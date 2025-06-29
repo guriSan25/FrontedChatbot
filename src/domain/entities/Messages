@@ -1,0 +1,6 @@
+interface Message { 
+id_bot: number; 
+content: string;
+message_id: number;
+} 
+export default Message;
