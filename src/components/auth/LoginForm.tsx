@@ -1,12 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
 export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
+  const router = useRouter();
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -30,10 +33,19 @@ export default function LoginForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
+    
+
+    const response = await fetch("/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payload: {username, password} , action: "login" })
+    })
+
+    if (response.ok) {
+      router.push('/dashboard'); // Redirigir al home si el login es exitoso
+    }
   };
 
   return (
@@ -57,7 +69,7 @@ export default function LoginForm() {
 
         <input
           type="password"
-          placeholder="Contraceña"
+          placeholder="Contraseña"
           value={password}
           onChange={handlePasswordChange}
           className={styles.loginInput}

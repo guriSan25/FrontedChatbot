@@ -2,21 +2,13 @@
 
 import { useState } from 'react';
 import styles from './login.module.css';
-
-interface User {
-  id: number;
-  username: string;
-  full_name: string;
-  dateOfBirth: Date;
-  email: string;
-  password: string;
-}
+import User from '@/domain/entities/User';
 
 export default function RegisterForm() {
   const [user, setUser] = useState<Omit<User, 'id'>>({
     username: '',
     full_name: '',
-    dateOfBirth: new Date(),
+    dateofBirth: new Date(),
     email: '',
     password: ''
   });
@@ -76,9 +68,25 @@ export default function RegisterForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Usuario registrado:', user);
+
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al registrar usuario:', errorData);
+      return;
+    }
+
+    
+    
   };
 
   return (
@@ -127,7 +135,7 @@ export default function RegisterForm() {
         <input
           type="date"
           name="dateOfBirth"
-          value={user.dateOfBirth.toISOString().split('T')[0]}
+          value={user.dateofBirth.toISOString().split('T')[0]}
           onChange={handleDateChange}
           className={styles.loginInput}
         />

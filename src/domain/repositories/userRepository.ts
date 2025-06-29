@@ -1,4 +1,4 @@
-import User from "@entities/User" 
+import User, { LoginRequest } from "@entities/User" 
  
 export interface UserRepository { 
     getUsers(): Promise<User[]>;  
@@ -9,7 +9,3 @@ export interface UserRepository {
     login(request: LoginRequest): Promise<string>; 
 }
 
-export interface LoginRequest{
-    username: string, 
-    password: string
-}

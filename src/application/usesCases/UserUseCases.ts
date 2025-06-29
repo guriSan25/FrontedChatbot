@@ -1,7 +1,7 @@
-import { LoginRequest, UserRepository } from 
+import { UserRepository } from 
 "@/domain/repositories/userRepository"; 
  
-import User from "@/domain/entities/User"; 
+import User, { LoginRequest } from "@/domain/entities/User"; 
  
 class UserUseCases { 
     private userRepository: UserRepository; 
