@@ -48,7 +48,7 @@ export default function LoginForm() {
 
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Nombre de usuario"
           value={username}
           onChange={handleUsernameChange}
           className={styles.loginInput}
@@ -57,14 +57,14 @@ export default function LoginForm() {
 
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Contraceña"
           value={password}
           onChange={handlePasswordChange}
           className={styles.loginInput}
         />
         {errors.password && <p className={styles.errorText}>{errors.password}</p>}
 
-        <button type="submit" className={styles.loginButton}>Login</button>
+        <button type="submit" className={styles.loginButton}>Acceder</button>
       </form>
     </div>
   );
