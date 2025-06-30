@@ -1,4 +1,4 @@
-import User, { LoginRequest } from "@entities/User" 
+import User, { LoginRequest, LoginResponse } from "@entities/User" 
  
 export interface UserRepository { 
     getUsers(): Promise<User[]>;  
@@ -6,6 +6,6 @@ export interface UserRepository {
     addUser(user: User): Promise<User>;  
     updateUser(user: User): Promise<User>;  
     deleteUser(id: number): Promise<void>;
-    login(request: LoginRequest): Promise<string>; 
+    login(request: LoginRequest): Promise<LoginResponse>; 
 }
 

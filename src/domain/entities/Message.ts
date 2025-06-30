@@ -8,7 +8,7 @@ conversation_id: string;
 export interface MessageRequest {
     is_bot: boolean; 
     content: string;
-    conversation_id: string;
+    conversationId: string;
     conversation: {
         userId: string;
         title: string;

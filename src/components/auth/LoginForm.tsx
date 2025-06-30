@@ -42,9 +42,12 @@ export default function LoginForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ payload: {username, password} , action: "login" })
     })
+    
+    console.log("Datos del login: " + await response.json());
+    
 
     if (response.ok) {
-      router.push('/dashboard'); // Redirigir al home si el login es exitoso
+      router.push('/chat/new'); // Redirigir al home si el login es exitoso
     }
   };
 

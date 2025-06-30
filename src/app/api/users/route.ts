@@ -42,9 +42,9 @@ export async function POST(req: RequestWithAction) {
       return NextResponse.json({ error: "Username and password are required" }, { status: 400 });
     }
 
-    const token = await UserUseCases.login(username, password);
+    const response = await UserUseCases.login(username, password);
 
-    (await cookies()).set("auth_token", token,{
+    (await cookies()).set("auth_token", JSON.stringify({token: response.token,userId: response.userId}),{
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Asegura que la cookie sea segura en producción
       sameSite: "strict", // Mejora la seguridad contra ataques CSRF

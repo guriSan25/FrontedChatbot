@@ -15,7 +15,16 @@ export default function Navbar() {
 
     const fetchConversations = async () => {
       try {
-        const response = await fetch('/api/conversations');
+
+        const cookie = await fetch('/api/cookie');
+        const cookieData = await cookie.json();
+
+        const userId = cookieData.userId; // Asegúrate de que el formato del cookie sea correcto
+
+        
+        
+
+        const response = await fetch(`/api/conversations/${userId}`);
         if (!response.ok) throw new Error('Error al obtener conversaciones');
         const data = await response.json();
         setConversations(data);

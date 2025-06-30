@@ -8,7 +8,7 @@ interface MessageRepository {
     deleteMessage(id: string): Promise<void>;
     getMessagesByUserId(userId: string): Promise<Message[]>;
     getMessagesByConversationId(conversationId: string): Promise<Message[]>;
-    sendMessageToBot(message: MessageExistintg): Promise<Message>;
+    sendMessageToBot(message: MessageExistintg): Promise<string>;
 }
 
 export default MessageRepository;

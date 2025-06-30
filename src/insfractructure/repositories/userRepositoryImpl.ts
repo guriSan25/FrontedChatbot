@@ -1,4 +1,4 @@
-import User, { LoginRequest } from "@entities/User";
+import User, { LoginRequest, LoginResponse } from "@entities/User";
 import { UserRepository } from "@repositories/userRepository";
 
 import https from "https";
@@ -73,14 +73,17 @@ class UserRepositoryAPI implements UserRepository {
     if (!res.ok) throw new Error("Error al eliminar usuario");
   }
 
-  async login(request: LoginRequest): Promise<string> {
+  async login(request: LoginRequest): Promise<LoginResponse> {
     try {
       const res = await axios.post(`${API_URL}/login`, request , {
         headers: { "Content-Type": "application/json" },
         httpsAgent,
       });
 
-      return res.data?.token || "login invalid"; // Retorna el token o un mensaje de error si no se obtiene un token
+      return {
+        token: res.data.token || "", // Aseguramos que siempre haya un token, aunque sea vacío
+        userId: res.data.user.id || 0, // Aseguramos que siempre haya un userId, aunque sea 0
+      } 
       
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -93,7 +96,10 @@ class UserRepositoryAPI implements UserRepository {
           errors: error.response?.data.errors, // ← Errores específicos del modelo
         });
       }
-      return "login invalid";
+      return {
+        token: "",
+        userId: 0,
+      }
     }
   }
 }

@@ -10,7 +10,8 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const usuario = await conversationUseCases.getConversationById(params.id);
+  const { id } = await params;
+  const usuario = await conversationUseCases.getConversationsByUserId(id);
   return NextResponse.json(usuario);
 }
 

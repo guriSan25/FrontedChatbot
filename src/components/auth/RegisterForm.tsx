@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import styles from './login.module.css';
 import User from '@/domain/entities/User';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [user, setUser] = useState<Omit<User, 'id'>>({
     username: '',
     full_name: '',
@@ -21,6 +23,14 @@ export default function RegisterForm() {
     password?: string;
   }>({});
 
+  const toLocalISODate = (date: Date) => {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser(prev => ({ ...prev, [name]: value }));
@@ -28,9 +38,21 @@ export default function RegisterForm() {
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = new Date(e.target.value);
-    setUser(prev => ({ ...prev, dateOfBirth: value }));
-    validateField('dateOfBirth', e.target.value);
+    const dateString = e.target.value;
+    if (!dateString) {
+      setUser(prev => ({ ...prev, dateofBirth: new Date() }));
+      return;
+    }
+    
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    
+    setUser(prev => ({ 
+      ...prev, 
+      dateofBirth: date 
+    }));
+    
+    validateField('dateOfBirth', dateString);
   };
 
   const validateField = (name: string, value: string) => {
@@ -76,17 +98,19 @@ export default function RegisterForm() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(user)
-    })
+      body: JSON.stringify({
+        action: "register",
+        payload: user
+      })
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Error al registrar usuario:', errorData);
       return;
     }
-
-    
-    
+    alert('Debe hacer login para comenzar ha usar el chat')
+    router.push('/auth/login');
   };
 
   return (
@@ -134,7 +158,7 @@ export default function RegisterForm() {
         {}
         <input
           type="date"
-          name="dateOfBirth"
+          name="dateofBirth"
           value={user.dateofBirth.toISOString().split('T')[0]}
           onChange={handleDateChange}
           className={styles.loginInput}

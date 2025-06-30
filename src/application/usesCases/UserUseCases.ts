@@ -1,7 +1,7 @@
 import { UserRepository } from 
 "@/domain/repositories/userRepository"; 
  
-import User, { LoginRequest } from "@/domain/entities/User"; 
+import User, { LoginRequest, LoginResponse } from "@/domain/entities/User"; 
  
 class UserUseCases { 
     private userRepository: UserRepository; 
@@ -29,7 +29,7 @@ class UserUseCases {
         await this.userRepository.deleteUser(id); 
     } 
 
-    async login(username: string, password: string): Promise<string>{
+    async login(username: string, password: string): Promise<LoginResponse>{
         const request: LoginRequest = {
             username, 
             password

@@ -71,7 +71,7 @@ class MessageRepositoryAPI implements MessageRepository {
     }
   }
 
-  async sendMessageToBot(message: MessageExistintg): Promise<Message> {
+  async sendMessageToBot(message: MessageExistintg): Promise<string> {
     const url = `${API_URL}/send-message`;
 
     console.log("Enviando mensaje al bot:", message);
@@ -84,23 +84,21 @@ class MessageRepositoryAPI implements MessageRepository {
       });
       if (res.status !== 200)
         throw new Error("Error al enviar mensaje al bot");
-      return res.data as Message;
+
+      console.log("Respuesta del bot en impl:", res.data.data.conversationId);
+
+      return res.data.data.conversationId;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Detalles del error:", {
           status: error.response?.status,
           data: error.response?.data || "No data returned",
           headers: error.response?.headers,
-          errors: error.response?.data || "No specific errors",
+          errors: error.response?.data.errors || "No specific errors",
         });
       }
 
-      return {
-        message_id: 0,
-        is_bot: false,
-        content: "Error al enviar mensaje al bot",
-        conversation_id: message.conversationId || "",
-      }
+      return "0"; // Retorna "0" en caso de error
     }
   }
 }

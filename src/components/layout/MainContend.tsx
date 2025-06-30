@@ -5,10 +5,12 @@ import Chat from './Chat';
 import styles from './layout.module.css';
 import SettingsMenu from './SettingsMenu';  // importa el menú
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function MainContent() {
 
   const params = useParams();
+  const router = useRouter();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   
@@ -20,7 +22,6 @@ export default function MainContent() {
   
     const content = form.get('content') as string;
     const conversationId = params.id; 
-
     
     const response = await fetch('/api/messages', {
       method: 'POST',
@@ -34,6 +35,12 @@ export default function MainContent() {
       }),
     })
 
+
+    const data = await response.json();
+    if (data.success && location.pathname === '/chat/new') {
+      router.push(`/chat/${data.conversationId}`);
+    }
+
     if (!response.ok) {
       console.error('Error al enviar el mensaje');
       return;
@@ -41,8 +48,6 @@ export default function MainContent() {
 
         
     setRefreshTrigger(prev => prev + 1); // Dispara la recarga
-
-
     
   }
 

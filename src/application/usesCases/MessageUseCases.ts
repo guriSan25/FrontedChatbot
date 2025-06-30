@@ -17,7 +17,7 @@ class MessageUseCases {
         return await this.messageRepository.getMessageById(id);
     }
 
-    async sendMessageToBot(message: MessageExistintg): Promise<Message> {
+    async sendMessageToBot(message: MessageExistintg): Promise<string> {
         return await this.messageRepository.sendMessageToBot(message);
     }
 }

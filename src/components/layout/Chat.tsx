@@ -21,8 +21,7 @@ function Chat({refreshTrigger} : {refreshTrigger: number}) {
                 
                 
                 const conversationId = params.id; // Asegúrate de que estás obteniendo el ID de conversación correctamente
-                console.log('Fetching messages for conversation ID:', conversationId);
-                
+
                 const response = await fetch(`/api/messages/${conversationId}`); // Asegúrate de que el endpoint sea correcto
                 if (!response.ok) throw new Error('Error al obtener mensajes');
                 const data = await response.json();

@@ -31,13 +31,26 @@ class ConversationApiImpl implements ConversationRepository {
     }
     async getConversationsByUserId(userId: string): Promise<Conversation[]> {
         const url = `${API_URL}/user/${userId}`;
+        try {
+            const res = await axios.get(url,{
+                httpsAgent,
+                headers: { "Content-Type": "application/json" }
+            });
+            if (res.status !== 200) throw new Error("Error al obtener conversaciones por usuario");
 
-        const res = await axios.get(url,{
-            httpsAgent,
-            headers: { "Content-Type": "application/json" }
-        });
-        if (res.status !== 200) throw new Error("Error al obtener conversaciones por usuario");
-        return res.data as Promise<Conversation[]>;
+            return res.data ;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error("Detalles del error:", {
+                    status: error.response?.status,
+                    data: error.response?.data || "No data returned",
+                    headers: error.response?.headers,
+                    errors: error.response?.data || "No specific errors",
+                });
+            }
+            return [];
+        }
+        
     }
   
 }
