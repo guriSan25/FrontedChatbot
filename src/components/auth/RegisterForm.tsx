@@ -1,3 +1,5 @@
+//registerform
+
 'use client';
 
 import { useState } from 'react';
@@ -22,6 +24,8 @@ export default function RegisterForm() {
     email?: string;
     password?: string;
   }>({});
+
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const toLocalISODate = (date: Date) => {
     if (!date) return '';
@@ -92,6 +96,7 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setServerError(null);
 
     const response = await fetch('/api/users', {
       method: 'POST',
@@ -105,8 +110,14 @@ export default function RegisterForm() {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Error al registrar usuario:', errorData);
+      let errorMsg = "Error al registrar usuario";
+      try {
+        const errorData = await response.json();
+        errorMsg = errorData.error || errorMsg;
+      } catch {
+        errorMsg = await response.text();
+      }
+      setServerError(errorMsg); 
       return;
     }
     alert('Debe hacer login para comenzar ha usar el chat')
@@ -115,14 +126,12 @@ export default function RegisterForm() {
 
   return (
     <div className={styles.loginBackground}>
-      {}
       <div className={styles.blueShape1}></div>
       <div className={styles.blueShape2}></div>
 
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h2 className={styles.loginTitle}>Registro</h2>
 
-        {}
         <input
           type="text"
           name="username"
@@ -133,7 +142,6 @@ export default function RegisterForm() {
         />
         {errors.username && <p className={styles.errorText}>{errors.username}</p>}
 
-        {}
         <input
           type="text"
           name="full_name"
@@ -144,7 +152,6 @@ export default function RegisterForm() {
         />
         {errors.full_name && <p className={styles.errorText}>{errors.full_name}</p>}
 
-        {}
         <input
           type="email"
           name="email"
@@ -155,17 +162,15 @@ export default function RegisterForm() {
         />
         {errors.email && <p className={styles.errorText}>{errors.email}</p>}
 
-        {}
         <input
           type="date"
           name="dateofBirth"
-          value={user.dateofBirth.toISOString().split('T')[0]}
+          value={toLocalISODate(user.dateofBirth)}
           onChange={handleDateChange}
           className={styles.loginInput}
         />
         {errors.dateOfBirth && <p className={styles.errorText}>{errors.dateOfBirth}</p>}
 
-        {}
         <input
           type="password"
           name="password"
@@ -176,9 +181,23 @@ export default function RegisterForm() {
         />
         {errors.password && <p className={styles.errorText}>{errors.password}</p>}
 
+        {serverError && <p className={styles.errorText}>{serverError}</p>}
+
         <button type="submit" className={styles.loginButton}>
           Registrarse
         </button>
+
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <span>¿Ya tiene una cuenta? </span>
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => router.push('/auth/login')}
+            style={{ background: 'none', border: 'none', color: '#0070f3', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+          >
+            Iniciar sesión
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Chat from './Chat';
 import styles from './layout.module.css';
 import SettingsMenu from './SettingsMenu';  // importa el menú
@@ -12,6 +12,7 @@ export default function MainContent() {
   const params = useParams();
   const router = useRouter();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const input = useRef<HTMLInputElement>(null);
 
   
   const handleSubmit = async (event: React.FormEvent) => {
@@ -48,6 +49,12 @@ export default function MainContent() {
 
         
     setRefreshTrigger(prev => prev + 1); // Dispara la recarga
+
+    if (input.current) {
+      input.current.value = ''; // Limpia el input después de enviar
+    }
+
+    
     
   }
 
@@ -70,6 +77,7 @@ export default function MainContent() {
           placeholder="Escribe lo que necesites..."
           required
           name='content'
+          ref={input}
           className={`${styles.inputBig} flex-grow font-semibold rounded-full bg-transparent`}
         />
 

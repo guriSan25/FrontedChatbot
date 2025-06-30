@@ -43,13 +43,13 @@ class UserRepositoryAPI implements UserRepository {
       if (res.status !== 200) throw new Error("Error al crear usuario");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Detalles del error:", {
-          status: error.response?.status,
-          data: error.response?.data, // ← Mensaje de error del backend
-          headers: error.response?.headers,
-          errors: error.response?.data.errors, // ← Errores específicos del modelo
-        });
+        const backendMsg =
+          typeof error.response?.data === "string"
+            ? error.response.data
+            : error.response?.data?.error || "Error al crear usuario";
+        throw new Error(backendMsg); 
       }
+      throw error;
     }
 
     return user;
@@ -88,13 +88,18 @@ class UserRepositoryAPI implements UserRepository {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error);
-
         console.error("Detalles del error:", {
           status: error.response?.status,
-          data: error.response?.data, // ← Mensaje de error del backend
+          data: error.response?.data, 
           headers: error.response?.headers,
-          errors: error.response?.data.errors, // ← Errores específicos del modelo
+          errors: error.response?.data.errors, 
         });
+
+        const backendMsg =
+          typeof error.response?.data === "string"
+            ? error.response.data
+            : error.response?.data?.error || "Usuario o contraseña incorrectos.";
+        throw new Error(backendMsg); 
       }
       return {
         token: "",

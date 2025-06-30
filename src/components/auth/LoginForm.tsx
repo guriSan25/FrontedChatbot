@@ -10,6 +10,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
   const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -25,14 +26,14 @@ export default function LoginForm() {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
-
-    if (value.length < 6) {
-      setErrors((prev) => ({ ...prev, password: 'La contraseña debe tener al menos 6 caracteres' }));
+  
+    if (value.trim() === '') {
+      setErrors((prev) => ({ ...prev, password: 'La contraseña es obligatoria' }));
     } else {
       setErrors((prev) => ({ ...prev, password: undefined }));
     }
   };
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -42,6 +43,11 @@ export default function LoginForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ payload: {username, password} , action: "login" })
     })
+
+    if (!response.ok) {
+      setServerError("Error al iniciar sesión. Por favor, verifica tus credenciales."); 
+      return;
+    }
     
     console.log("Datos del login: " + await response.json());
     
@@ -79,7 +85,21 @@ export default function LoginForm() {
         />
         {errors.password && <p className={styles.errorText}>{errors.password}</p>}
 
+        {serverError && <p className={styles.errorText}>{serverError}</p>}
+
         <button type="submit" className={styles.loginButton}>Acceder</button>
+
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <span>¿No tiene una cuenta? </span>
+          <button
+            type="button"
+            className={styles.linkButton}
+            onClick={() => router.push('/auth/register')}
+            style={{ background: 'none', border: 'none', color: '#0070f3', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+          >
+            Regístrate
+          </button>
+        </div>
       </form>
     </div>
   );

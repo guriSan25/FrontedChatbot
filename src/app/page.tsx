@@ -7,8 +7,41 @@ import { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+export const translations = {
+  es: {
+    title: "Chapi, tu asistente inteligente 24/7",
+    description: "Una experiencia conversacional fluida, rápida y segura para tus necesidades",
+    login: "Iniciar sesión",
+    register: "Registrarse",
+    available: "Disponible 24/7",
+    naturalLanguage: "Lenguaje natural",
+    security: "Seguridad garantizada",
+    fastResponses: "Respuestas rápidas",
+    whyChooseChapi: "Por qué elegir Chapi",
+    getStarted: "¿Listo para comenzar?",
+    startNow: "Comenzar ahora",
+    registedNow: "Regístrate ahora y descubre cómo Chapi puede simplificar tu vida.",
+    footerText: "© Todos los derechos reservados.",
+  },
+  en: {
+    title: "Chapi, your 24/7 smart assistant",
+    description: "A fluid, fast and secure conversational experience for your needs",
+    login: "Login",
+    register: "Sign up",
+    available: "Available 24/7",
+    naturalLanguage: "Natural language",
+    security: "Guaranteed security",
+    fastResponses: "Fast responses",
+    whyChooseChapi: "Why choose Chapi",
+    getStarted: "Ready to get started?",
+    registedNow: "Register now and discover how Chapi can simplify your life.",
+    startNow: "Start now",
+  }
+};
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState('es'); // Idioma por defecto
 
   useEffect(() => {
     // Comprobar preferencia del sistema o localStorage al cargar
@@ -16,6 +49,7 @@ export default function Home() {
                   (!('darkMode' in localStorage) && 
                   window.matchMedia('(prefers-color-scheme: dark)').matches);
     setDarkMode(isDark);
+
   }, []);
 
   useEffect(() => {
@@ -33,6 +67,10 @@ export default function Home() {
   const toggleDarkMode = () => {
     setDarkMode(prev => !prev);
   };
+
+  const toggleLanguage = () => {
+    setLanguage(prev => (prev === 'es' ? 'en' : 'es'));
+  }
 
   const router = useRouter();
   const goToLogin = () => {
@@ -65,9 +103,13 @@ export default function Home() {
               >
                 {darkMode ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
               </button>
+              <button onClick={toggleLanguage} className="px-4 py-2 rounded-xl text-amber-600 dark:text-amber-600 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                {language === 'es' ? 'Español' : 'English'}
+              </button>
               <button onClick={goToLogin} className="px-4 py-2 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 Login
               </button>
+
               <button onClick={goToRegister} className="px-4 py-2 rounded-xl bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
                 Registrarse
               </button>
@@ -83,13 +125,13 @@ export default function Home() {
             <div className="flex flex-col lg:flex-row items-center gap-12">
               <div className="lg:w-1/2 space-y-6">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-                  Chapi, tu asistente inteligente 24/7
+                    {translations[language as keyof typeof translations].title}
                 </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300">
-                  Una experiencia conversacional fluida, rápida y segura para tus necesidades
+                    {translations[language as keyof typeof translations].description}
                 </p>
                 <button onClick={goToLogin} className="px-8 py-4 rounded-xl bg-blue-600 dark:bg-blue-500 text-white text-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors shadow-lg hover:shadow-xl dark:shadow-blue-500/20">
-                  Comenzar ahora
+                  {translations[language as keyof typeof translations].login}
                 </button>
               </div>
               <div className="lg:w-1/2">
@@ -111,14 +153,14 @@ export default function Home() {
         <section className="py-20 bg-gray-50 dark:bg-gray-800/30 transition-colors duration-300">
           <div className="container mx-auto px-4 max-w-7xl">
             <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
-              Por qué elegir Chapi
+              {translations[language as keyof typeof translations].whyChooseChapi}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md dark:shadow-gray-700/50 dark:hover:shadow-gray-700/70 transition-all">
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mb-4">
                   <FiClock className="text-blue-600 dark:text-blue-400 w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 dark:text-white">Disponible 24/7</h3>
+                <h3 className="text-xl font-semibold mb-2 dark:text-white">{translations[language as keyof typeof translations].available}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   Asistencia siempre disponible cuando la necesites, sin horarios ni esperas.
                 </p>
@@ -127,7 +169,7 @@ export default function Home() {
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mb-4">
                   <FiMessageSquare className="text-blue-600 dark:text-blue-400 w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 dark:text-white">Lenguaje natural</h3>
+                <h3 className="text-xl font-semibold mb-2 dark:text-white">{translations[language as keyof typeof translations].naturalLanguage}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   Conversaciones fluidas con comprensión avanzada del lenguaje humano.
                 </p>
@@ -136,7 +178,7 @@ export default function Home() {
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mb-4">
                   <FiShield className="text-blue-600 dark:text-blue-400 w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 dark:text-white">Seguridad garantizada</h3>
+                <h3 className="text-xl font-semibold mb-2 dark:text-white">{translations[language as keyof typeof translations].security}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   Tus datos siempre protegidos con encriptación de última generación.
                 </p>
@@ -145,7 +187,7 @@ export default function Home() {
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mb-4">
                   <FiZap className="text-blue-600 dark:text-blue-400 w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 dark:text-white">Respuestas rápidas</h3>
+                <h3 className="text-xl font-semibold mb-2 dark:text-white">{translations[language as keyof typeof translations].fastResponses}</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   Tecnología optimizada para brindarte soluciones en segundos.
                 </p>
@@ -157,12 +199,11 @@ export default function Home() {
         {/* CTA Section */}
         <section className="py-20 bg-blue-600 dark:bg-blue-700 text-white transition-colors duration-300">
           <div className="container mx-auto px-4 max-w-7xl text-center">
-            <h2 className="text-3xl font-bold mb-6">¿Listo para comenzar?</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Regístrate ahora y descubre cómo Chapi puede simplificar tu vida.
+             {translations[language as keyof typeof translations].registedNow}
             </p>
             <button className="px-8 py-4 rounded-xl bg-white dark:bg-gray-100 text-blue-600 dark:text-blue-700 text-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors shadow-lg hover:shadow-xl">
-              Comenzar ahora
+              {translations[language as keyof typeof translations].getStarted}
             </button>
           </div>
         </section>
