@@ -22,7 +22,7 @@ export async function middleware(req: Request) {
     }
 
     if (token && isPublicPath) {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+        return NextResponse.redirect(new URL('/chat/10', req.url));
     }
       
 

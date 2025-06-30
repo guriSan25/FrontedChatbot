@@ -1,0 +1,73 @@
+
+.textShadowWhite {
+  color: white; /* Asegura el color blanco */
+  font-weight: 800; 
+  font-size: 3rem;
+}
+
+.formCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 48rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 9999px;
+  background-color: #212534;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.inputBig {
+  width: 100%;
+  align-items: center !important;
+  justify-content: center !important; 
+  max-width: 50rem; 
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  border-radius: 9999px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  resize: none; 
+  overflow: hidden;
+  min-height: 4rem;
+}
+
+.inputBig::placeholder {
+  color: #ffffff;
+}
+
+.inputBig:focus {
+  border-color: #000000;
+  box-shadow: 0 0 10px #808080;
+}
+
+.textShadowWhite {
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+  color: white;
+  font-weight: 800;
+}
+
+.buttonSend {
+  margin-left: 0.75rem;
+  background-color: #4b5563; 
+  padding: 0.75rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttonSend:hover {
+  background-color: #374151; 
+}
+
+.buttonSend svg {
+  height: 10rem;
+  width: 10rem;
+  color: white;
+}
+
+

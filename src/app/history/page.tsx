@@ -1,6 +1,6 @@
 import Navbar from "@/components/layout/Navbar"
 import SettingsMenu from "@/components/layout/SettingsMenu"
-import HistoryPanel from "@/components/history/HistoryPanel"
+// import HistoryPanel from "@/components/history/HistoryPanel"
 
 export default function HistoryPage() {
   return (
@@ -10,7 +10,7 @@ export default function HistoryPage() {
         <div className="absolute top-4 right-4">
           <SettingsMenu />
         </div>
-        <HistoryPanel />
+        {/* <HistoryPanel /> */}
       </div>
     </div>
   )

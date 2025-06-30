@@ -1,36 +1,72 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+import styles from './navbar.module.css';
+import { FaRegComments, FaPen, FaShieldAlt } from "react-icons/fa";
+import Conversation from '@/domain/entities/Conversations';
+import { useRouter } from 'next/navigation';
+
 export default function Navbar() {
-  const chats = [
-    "Problema con Docker",
-    "Utilizar Next JS",
-    "Aprender Python",
-    "Ideas proyectos",
-    "¿Por qué no usar PHP?",
-    "Python y Flask",
-    "¿Qué es el modelo relacional?",
-  ]
+  
+  const [conversations,setConversations] = useState<Conversation[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+
+    const fetchConversations = async () => {
+      try {
+        const response = await fetch('/api/conversations');
+        if (!response.ok) throw new Error('Error al obtener conversaciones');
+        const data = await response.json();
+        setConversations(data);
+      } catch (error) {
+        console.error('Error fetching conversations:', error);
+      }
+    };
+
+    fetchConversations();
+
+  },[])
+
+  const goToChat = (chatId: number) => {
+    router.push(`/chat/${chatId}`);
+  }
+
+  const createNewChat = () => {
+    router.push('/chat/new');
+  }
 
   return (
-    <aside className="w-64 bg-[#111214] text-white p-4 flex flex-col justify-between">
-      <div>
-        <h2 className="text-xl font-bold mb-6">🤖 CHAPI</h2>
-        <button className="flex items-center gap-2 mb-6 px-4 py-2 bg-[#2E2F33] hover:bg-[#3A3B40] rounded">
-          ✏️ Nuevo Chat
+    <>
+      <aside className={styles.navbar}>
+        <div className={styles.logo}>
+          <FaRegComments size={28} />
+          <h1 className="font-bold text-xl">CHAPI</h1>
+        </div>
+
+        <button className={styles.newChatButton} onClick={createNewChat}>
+          <FaPen size={24} />
+          <span>Nuevo Chat</span>
         </button>
-        <div className="space-y-2">
-          {chats.map((chat, idx) => (
-            <button key={idx} className="w-full text-left flex items-center gap-2 hover:bg-[#2E2F33] p-2 rounded">
-              💬 {chat}
+
+        <hr className="border-gray-700 mb-6" />
+
+        <nav className={styles.chatList}>
+          {conversations.map((chat, i) => (
+            <button key={i} className={styles.chatItem} onClick={() => {
+              goToChat(chat.id);
+            }}>
+              <FaRegComments size={20} />
+              <span>{chat.title}</span>
             </button>
           ))}
-        </div>
-      </div>
+        </nav>
 
-      <div className="mt-6 border-t border-gray-600 pt-4 text-sm text-gray-300">
-        <div className="bg-[#1E3A8A] text-white p-2 rounded">
-          🛡️ Accede al plan premium <br />
-          ¡Usa la IA sin límite!
+        <div className={styles.premiumBox}>
+          <FaShieldAlt size={26} className="mx-auto mb-1" />
+          <p>Acceder al plan premium<br />¡Usa la IA sin límite!</p>
         </div>
-      </div>
-    </aside>
-  )
+      </aside>
+    </>
+  );
 }
