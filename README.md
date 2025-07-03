@@ -65,8 +65,8 @@ Este proyecto fue desarrollado por el equipo de **CHAPI IA** como una solución 
 
 ### 👨‍💻 Desarrolladores principales:
 
-- [Grimaldi Solano](github.com/guriSan25)
-- [Sebastian Fallas]([https://github.com/usuario3](https://github.com/FallasDev/FallasDev.git))
-- [Dixon Sanchez]([https://github.com/usuario3](https://github.com/Dixon-SS03))
-- [Kalet Melendez]([https://github.com/usuario2](https://github.com/KaletM)) 
+- [Grimaldi Solano](https://github.com/guriSan25)
+- [Sebastian Fallas](https://github.com/FallasDev/FallasDev.git)
+- [Dixon Sanchez](https://github.com/Dixon-SS03)
+- [Kalet Melendez](https://github.com/KaletM)
 
